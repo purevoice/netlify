@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omoyayi O. - Data Analyst Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #1E3A8A;
+            --brand-primary-hover: #1e3070;
+            --brand-light: #DBEAFE;
+            --brand-accent: #2563EB;
+            --brand-accent-light: #EFF6FF;
+            --bg-body: #F0F4FF;
+            --bg-surface: #FFFFFF;
+            --bg-surface-hover: #EFF6FF;
+            --bg-dark: #0A1628;
+            --bg-dark2: #0F172A;
+            --text-main: #0A1628;
+            --text-muted: #384353;
+            --text-inverse: #FFFFFF;
+            --border-color: #C7D7F5;
+            --border-dark: #1E3A5F;
+            --shadow-sm: 0 1px 3px 0 rgb(30 58 138 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+            --shadow-md: 0 4px 12px -2px rgb(30 58 138 / 0.12), 0 2px 6px -2px rgb(0 0 0 / 0.06);
+            --shadow-lg: 0 12px 28px -4px rgb(30 58 138 / 0.18), 0 4px 10px -4px rgb(0 0 0 / 0.08);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { letter-spacing: -0.02em; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+        p { color: var(--text-muted); }
+        a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+        /* Reveal animations */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(240,244,255,0.97);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0;
+            height: 64px;
+            display: flex; align-items: center;
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo {
+            font-size: 1.15rem; font-weight: 800; color: var(--brand-primary);
+            display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+            background: none; border: none; font-family: 'Inter', sans-serif;
+            letter-spacing: -0.03em;
+        }
+        .logo span { color: var(--brand-accent); }
+
+        /* Desktop nav links */
+        .nav-links { display: flex; gap: 0; align-items: center; }
+        .nav-links a {
+            font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
+            cursor: pointer; background: none; border: none;
+            font-family: 'Inter', sans-serif; transition: color 0.2s;
+            padding: 0.5rem 1rem; border-radius: 6px;
+        }
+        .nav-links a:hover { color: var(--brand-primary); background: var(--brand-light); }
+        .nav-resume-btn {
+            margin-left: 0.5rem; background: var(--brand-primary); color: #fff !important;
+            border: none; border-radius: 8px; padding: 0.5rem 1.1rem;
+            font-size: 0.875rem; font-weight: 600; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: var(--transition-smooth);
+        }
+        .nav-resume-btn:hover { background: var(--brand-primary-hover); }
+
+        /* Hamburger — mobile only */
+        .hamburger {
+            display: none; flex-direction: column; justify-content: center; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 8px;
+            width: 36px; height: 36px;
+        }
+        .hamburger span {
+            display: block; width: 20px; height: 2px;
+            background: var(--text-main); border-radius: 2px;
+            transition: var(--transition-smooth);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile dropdown */
+        .mobile-menu {
+            display: none; position: fixed; top: 64px; left: 0; right: 0;
+            background: #fff; border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem 24px 1rem; flex-direction: column; gap: 0; z-index: 999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-size: 0.95rem; font-weight: 500; color: var(--text-muted);
+            padding: 0.875rem 0; border: none; border-bottom: 1px solid var(--border-color);
+            background: none; text-align: left; cursor: pointer; display: block;
+            font-family: 'Inter', sans-serif; transition: color 0.2s; width: 100%;
+        }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { color: var(--brand-primary); }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; font-weight: 600; font-size: 0.9rem;
+            border-radius: 8px; cursor: pointer; transition: var(--transition-smooth); border: none;
+            font-family: 'Inter', sans-serif; white-space: nowrap;
+        }
+        .btn-primary { background: var(--brand-primary); color: #fff; box-shadow: 0 2px 8px rgba(30,58,138,0.35); }
+        .btn-primary:hover { background: var(--brand-primary-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,58,138,0.4); color: #fff; }
+        .btn-outline { background: transparent; color: var(--brand-primary); border: 1.5px solid var(--border-color); }
+        .btn-outline:hover { border-color: var(--brand-accent); color: var(--brand-accent); background: var(--brand-accent-light); }
+
+        /* Tags */
+        .tag-group { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+        .tag { background: var(--brand-light); color: var(--brand-primary); font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 999px; letter-spacing: 0.01em; }
+
+        /* ── SPA VIEWS (Simplified for Home page) ── */
+        .main-content { flex: 1; }
+        #home { padding-top: 64px; }
+
+        /* ══════════════════════════════
+           HERO — two column
+        ══════════════════════════════ */
+        .hero-section { padding: 52px 0 64px; position: relative; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem;
+            background: var(--brand-light); color: var(--brand-primary); border-radius: 999px; 
+            font-size: 0.68rem; font-weight: 700; margin-bottom: 1.25rem; 
+            border: 1px solid rgba(30,58,138,0.2); letter-spacing: 0.06em; text-transform: uppercase;
+        }
+        .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--brand-accent); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+        .hero-left h1 { font-size: clamp(2.8rem, 5.5vw, 4.5rem); margin-bottom: 1.25rem; letter-spacing: -0.04em; line-height: 1.0; font-weight: 800; color: var(--text-main); }
+        .hero-left h1 span { color: var(--brand-accent); }
+        .hero-desc { font-size: 1rem; margin-bottom: 2rem; max-width: 480px; line-height: 1.75; color: var(--text-muted); }
+        .hero-actions { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+
+        /* ── Animated chart visual ── */
+        .hero-visual { position: relative; height: 380px; }
+        .chart-card {
+            position: absolute; inset: 0; background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 20px; box-shadow: var(--shadow-lg); overflow: hidden; padding: 1.5rem; display: flex; flex-direction: column;
+        }
+        .chart-grid-bg {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+            background-size: 36px 36px; opacity: 0.45;
+        }
+        .chart-label-bottom { position: absolute; bottom: 1rem; left: 0; right: 0; text-align: center; font-size: 0.7rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; z-index: 2; }
+        .chart-bars-wrap { position: absolute; bottom: 2.5rem; left: 1.5rem; right: 1.5rem; height: 240px; display: flex; align-items: flex-end; gap: 10px; z-index: 2; }
+        .chart-bar { flex: 1; border-radius: 5px 5px 0 0; transform: scaleY(0); transform-origin: bottom; animation: growBar 0.7s ease-out forwards; }
+        .chart-bar:nth-child(1) { background: var(--brand-accent); height: 52%; animation-delay: 0.1s; }
+        .chart-bar:nth-child(2) { background: #BFDBFE; height: 68%; animation-delay: 0.2s; }
+        .chart-bar:nth-child(3) { background: var(--brand-primary); height: 44%; animation-delay: 0.3s; }
+        .chart-bar:nth-child(4) { background: var(--brand-accent); height: 85%; animation-delay: 0.4s; }
+        .chart-bar:nth-child(5) { background: #BFDBFE; height: 62%; animation-delay: 0.5s; }
+        .chart-bar:nth-child(6) { background: var(--brand-primary); height: 94%; animation-delay: 0.6s; }
+        @keyframes growBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+        .chart-trend { position: absolute; bottom: 2.5rem; left: 1.5rem; right: 1.5rem; height: 240px; z-index: 3; pointer-events: none; }
+        .trend-path { stroke-dasharray: 300; stroke-dashoffset: 300; animation: drawLine 1.2s ease-out 0.7s forwards; }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        .stat-pill { position: absolute; z-index: 4; background: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem 1rem; box-shadow: 0 4px 16px rgba(30,58,138,0.12); animation: floatIn 0.5s ease-out forwards; opacity: 0; }
+        .stat-pill:nth-child(1) { top: 1rem; right: 1.25rem; animation-delay: 1s; }
+        .stat-pill:nth-child(2) { top: 5.5rem; left: 1.25rem; animation-delay: 1.1s; }
+        @keyframes floatIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .stat-val { font-size: 1.25rem; font-weight: 800; color: var(--brand-accent); line-height: 1; display: block; }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; margin-top: 0.15rem; display: block; }
+
+        @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; } .hero-visual { height: 280px; } }
+
+        /* ══════════════════════════════
+           ABOUT — dark full-bleed
+        ══════════════════════════════ */
+        #about-section { background: var(--bg-dark); width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; padding: 72px 0; }
+        .about-grid { display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: start; }
+        .about-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-accent); margin-bottom: 1rem; }
+        .about-left h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); color: #fff; margin-bottom: 1.5rem; line-height: 1.15; }
+        .about-left h2 span { color: var(--brand-accent); }
+        .about-left p { color: #94A3B8; font-size: 0.95rem; line-height: 1.85; margin-bottom: 1rem; }
+        .about-left p strong { color: #CBD5E1; font-weight: 600; }
+        .about-right-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 1.75rem; }
+        .about-right-card h3 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #64748B; margin-bottom: 1.5rem; }
+        .tools-group { margin-bottom: 1.5rem; }
+        .tools-group:last-child { margin-bottom: 0; }
+        .tools-group-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #384353; margin-bottom: 0.6rem; }
+        .tools-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .tool-tag { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94A3B8; border-radius: 6px; padding: 0.28rem 0.7rem; font-size: 0.75rem; font-weight: 500; }
+        .tool-tag.primary { background: rgba(37,99,235,0.18); border-color: rgba(37,99,235,0.35); color: #93C5FD; }
+
+        /* ══════════════════════════════
+           PROJECTS
+        ══════════════════════════════ */
+        #projects-section { padding: 72px 0; }
+        .section-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-primary); margin-bottom: 0.6rem; }
+        .section-header { margin-bottom: 2.5rem; }
+        .section-header h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); margin-bottom: 0.4rem; }
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        
+        .project-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem;
+            box-shadow: var(--shadow-sm); transition: var(--transition-smooth); display: flex; flex-direction: column; cursor: pointer;
+            position: relative; overflow: hidden; text-decoration: none; color: inherit;
+        }
+        .project-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+            transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease;
+        }
+        .project-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(37,99,235,0.2); }
+        .project-card:hover::after { transform: scaleX(1); }
+        .project-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; margin-top: 0.25rem; line-height: 1.3; }
+        .project-card > p { font-size: 0.875rem; line-height: 1.65; margin-bottom: 1rem; flex-grow: 1; }
+        .project-card .impact-statement {
+            font-size: 0.825rem; font-weight: 500; color: var(--brand-primary); margin: 0 0 1.25rem;
+            background: var(--brand-accent-light); border-radius: 8px; padding: 0.65rem 0.85rem; line-height: 1.5; border-left: 3px solid var(--brand-accent);
+        }
+        .project-card .read-more { margin-top: auto; color: var(--brand-accent); font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+        .project-card:hover .read-more { gap: 0.7rem; }
+
+        /* ══════════════════════════════
+           SKILLS — dark full-bleed
+        ══════════════════════════════ */
+        #skills-section {
+            background: var(--bg-dark); width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; padding: 72px 0;
+        }
+        #skills-section .section-header h2 { color: #fff; }
+        #skills-section .section-header p { color: #64748B; }
+        #skills-section .section-eyebrow { color: var(--brand-accent); }
+        .skills-expanded-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .skill-card-exp { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: 1.5rem; transition: background 0.2s, border-color 0.2s; }
+        .skill-card-exp:hover { background: rgba(37,99,235,0.1); border-color: rgba(37,99,235,0.25); }
+        .skill-card-exp h3 { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; margin-bottom: 1rem; color: #E2E8F0; font-weight: 600; }
+        .skill-card-exp h3 svg { color: var(--brand-accent); flex-shrink: 0; }
+        .skill-item-list { list-style: none; }
+        .skill-item-list li { font-size: 0.82rem; color: #94A3B8; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.45rem; }
+        .skill-item-list li:last-child { border-bottom: none; }
+        .skill-item-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--brand-accent); flex-shrink: 0; }
+
+        /* ── FOOTER (dark, contact) ── */
+        footer { background: #020617; border-top: 1px solid #1E293B; padding: 3.5rem 0 2rem; }
+        .footer-inner { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; margin-bottom: 2.5rem; }
+        .footer-brand .logo-text { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; letter-spacing: -0.03em; }
+        .footer-brand .logo-text span { color: var(--brand-accent); }
+        .footer-brand p { color: #384353; font-size: 0.875rem; line-height: 1.7; max-width: 340px; }
+        .footer-contact h4 { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #384353; margin-bottom: 1.25rem; }
+        .footer-contact-links { display: flex; flex-direction: column; gap: 0.65rem; }
+        .footer-contact-link { display: flex; align-items: center; gap: 0.75rem; color: #94A3B8; font-size: 0.875rem; font-weight: 500; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; transition: all 0.2s; }
+        .footer-contact-link:hover { border-color: var(--brand-primary); color: #93C5FD; }
+        .footer-contact-link svg { color: var(--brand-accent); flex-shrink: 0; }
+        .footer-bottom { border-top: 1px solid #1E293B; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .footer-bottom p { font-size: 0.8rem; color: #334155; }
+        .footer-bottom span { color: var(--brand-accent); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .skills-expanded-grid { grid-template-columns: repeat(2, 1fr); }
+            .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero-visual { height: 300px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-resume-btn { display: none; }
+            .hamburger { display: flex; }
+            .hero-section { padding: 40px 0 52px; }
+            .hero-left h1 { font-size: 2.25rem; }
+            .hero-desc { font-size: 1rem; }
+            .hero-actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .skills-expanded-grid { grid-template-columns: 1fr 1fr; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+            #about-section, #skills-section { padding: 48px 0; }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+            .hero-left h1 { font-size: 1.9rem; }
+            .skills-expanded-grid { grid-template-columns: 1fr; }
+            .project-card { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand-primary)"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                Omoyayi<span>&nbsp;O.</span>
+            </a>
+
+            <!-- Desktop links -->
+            <div class="nav-links">
+                <a href="#about-section">About</a>
+                <a href="#projects-section">Projects</a>
+                <a href="#skills-section">Skills</a>
+                <a href="#footer-contact">Contact</a>
+                
+            </div>
+
+            <!-- Hamburger -->
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about-section">About</a>
+        <a href="#projects-section">Projects</a>
+        <a href="#skills-section">Skills</a>
+        <a href="#footer-contact">Contact</a>
+    </div>
+
+    <main class="main-content">
+
+        <!-- ════════════════════════════
+             HOME VIEW
+        ════════════════════════════ -->
+        <div id="home" class="view active">
+
+            <!-- HERO -->
+            <div class="container">
+                <section class="hero-section reveal">
+                    <div class="hero-grid">
+
+                        <!-- Left: text -->
+                        <div class="hero-left">
+                            <div class="hero-badge">Data Analyst · Open to Opportunities</div>
+                            <h1>Turning <span>raw data</span> into real decisions.</h1>
+                            <p class="hero-desc">I transform complex, fragmented data into clear insights, dashboards and reports that support fast, confident decision-making.</p>
+                            <div class="hero-actions">
+                                <a href="#projects-section" class="btn btn-primary">
+                                    View Projects
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Right: animated chart -->
+                        <div class="hero-visual">
+                            <div class="chart-card">
+                                <div class="chart-grid-bg"></div>
+
+                                <!-- Floating stat pills -->
+                                <div class="stat-pill">
+                                    <span class="stat-val">+34%</span>
+                                    <span class="stat-lbl">Revenue Growth</span>
+                                </div>
+                                <div class="stat-pill">
+                                    <span class="stat-val">12h</span>
+                                    <span class="stat-lbl">Saved Weekly</span>
+                                </div>
+
+                                <!-- Bars -->
+                                <div class="chart-bars-wrap">
+                                    <div class="chart-bar"></div>
+                                    <div class="chart-bar"></div>
+                                    <div class="chart-bar"></div>
+                                    <div class="chart-bar"></div>
+                                    <div class="chart-bar"></div>
+                                    <div class="chart-bar"></div>
+                                </div>
+
+                                <!-- Trend line -->
+                                <svg class="chart-trend" viewBox="0 0 400 240" preserveAspectRatio="none">
+                                    <polyline
+                                        class="trend-path"
+                                        points="33,185 99,155 165,200 231,80 297,138 363,18"
+                                        fill="none"
+                                        stroke="var(--brand-accent)"
+                                        stroke-width="2.5"
+                                        stroke-dasharray="6 4"
+                                        opacity="0.7"
+                                    />
+                                </svg>
+
+                                <div class="chart-label-bottom">Monthly Performance Analysis · Q1–Q2 2024</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- ABOUT — dark full-bleed -->
+            <section id="about-section" class="reveal">
+                <div class="container">
+                    <div class="about-grid">
+                        <div class="about-left">
+                            <div class="about-eyebrow">Background &amp; Approach</div>
+                            <h2>Turning <span>complexity</span> into clarity.</h2>
+                            <p>I work with data to uncover what is driving performance, what is changing over time, and what actions need to be taken.</p>
+                            <p>As a data analyst, my work focuses on transforming raw, inconsistent data into structured analysis that highlights patterns, trends, and key drivers of business outcomes. From high-level summaries to detailed breakdowns, I build reports that support clear and confident decisions.</p>
+                            <p>I primarily use <strong>Excel and Power Query</strong> to produce analysis that is both technically sound and easy to interpret, enabling stakeholders to move from data to insight without friction.</p>
+                        </div>
+                        <div>
+                            <div class="about-right-card">
+                                <h3>Skills &amp; Tools</h3>
+                                <div class="tools-group">
+                                    <div class="tools-group-label">Core Stack</div>
+                                    <div class="tools-tags">
+                                        <span class="tool-tag primary">Excel (Advanced)</span>
+                                        <span class="tool-tag primary">Power Query</span>
+										<span class="tool-tag primary">Power Pivot</span>
+                                    </div>
+                                </div>
+                                <div class="tools-group">
+                                    <div class="tools-group-label">Analysis</div>
+                                    <div class="tools-tags">
+                                        <span class="tool-tag">Descriptive Statistics</span>
+                                        <span class="tool-tag">Variance Analysis</span>
+                                        <span class="tool-tag">KPI Reporting</span>
+                                    </div>
+                                </div>
+                                <div class="tools-group">
+                                    <div class="tools-group-label">Visualisation &amp; BI</div>
+                                    <div class="tools-tags">
+                                        <span class="tool-tag">Excel Dashboards</span>
+                                        <span class="tool-tag">Pivot Charts</span>
+                                        <span class="tool-tag">Power BI (Basic)</span>
+                                    </div>
+                                </div>
+                                <div class="tools-group">
+                                    <div class="tools-group-label">Data Operations</div>
+                                    <div class="tools-tags">
+                                        <span class="tool-tag">Data Cleaning</span>
+                                        <span class="tool-tag">Data Validation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROJECTS -->
+            <div class="container">
+                <section id="projects-section" style="padding: 72px 0 0;">
+                    <div class="section-header reveal">
+                        <div class="section-eyebrow">Featured Work</div>
+                        <h2>Projects</h2>
+                        <p>Business problems solved through structured data analysis.</p>
+                    </div>
+                    
+                    <div class="projects-grid">
+
+                        <!-- PROJECT 1: RETAIL TELECOM (Now First) -->
+                        <a href="retail-analysis.html" class="project-card reveal">
+                            <div class="tag-group">
+                                <span class="tag">Excel</span>
+                                <span class="tag">Sales Analysis</span>
+                                <span class="tag">Operations</span>
+                            </div>
+                            <h3>Retail Telecom Sales &amp; Operations Analysis</h3>
+                            <p>Multi-table analysis of a retail telecom business to identify the key drivers of sales performance across revenue, store operations, product contribution, and inventory management.</p>
+                            <div class="impact-statement">Analysed ₦30.55M in revenue across a six-month period — surfacing performance gaps in sales execution, product mix, and inventory alignment and delivering targeted recommendations.</div>
+                            <div class="read-more">View Breakdown
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </a>
+
+                        <!-- PROJECT 2: SALES PERFORMANCE (Now Second) -->
+                        <a href="sales-analysis.html" class="project-card reveal">
+                            <div class="tag-group">
+                                <span class="tag">Excel</span>
+                                <span class="tag">Power Query</span>
+                                <span class="tag">Revenue Analysis</span>
+                            </div>
+                            <h3>Sales Performance &amp; Revenue Decomposition Analysis</h3>
+                            <p>Exploratory analysis of transactional data from a UK-based online retailer to identify the drivers of revenue performance across 500,000+ transactions.</p>
+                            <div class="impact-statement">Decomposed £10.2M in revenue to reveal the core drivers of sales performance across time, product, geography, and customer behavior.</div>
+                            <div class="read-more">View Breakdown
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </a>
+
+                        <!-- PROJECT 3: -->
+                        <a href="churn-analysis.html" class="project-card reveal">
+                            <div class="tag-group">
+                                <span class="tag">Excel</span>
+                                <span class="tag">Churn Analysis</span>
+                                <span class="tag">EDA</span>
+                            </div>
+                            <h3>Telecom Customer Churn</h3>
+                            <p>Customer churn analysis of a telecommunications dataset to identify the key drivers of attrition and factors associated with higher churn risk across various customer segments.</p>
+                            <div class="impact-statement">Identified the key drivers of a 26.5% churn rate, which resulted in $3.68M in lost revenue and informed targeted retention strategies.</div>
+                            <div class="read-more">View Breakdown
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </a>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- SKILLS — dark full-bleed -->
+            <section id="skills-section" class="reveal" style="margin-top: 72px;">
+                <div class="container">
+                    <div class="section-header">
+                        <div class="section-eyebrow">Capabilities</div>
+                        <h2>Skills &amp; Tools</h2>
+                        <p>A full breakdown of what I use to extract insights and deliver results.</p>
+                    </div>
+                    <div class="skills-expanded-grid">
+
+                        <div class="skill-card-exp">
+                            <h3>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                                Analytics &amp; Reporting
+                            </h3>
+                            <ul class="skill-item-list">
+                                <li>Advanced Excel</li>
+                                <li>Descriptive Statistics</li>
+                                <li>Segmentation Analysis</li>
+                                <li>KPI Scorecards</li>
+                                <li>Executive Dashboards</li>
+                            </ul>
+                        </div>
+
+                        <div class="skill-card-exp">
+                            <h3>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                                Visualisation
+                            </h3>
+                            <ul class="skill-item-list">
+                                <li>Excel Dashboards</li>
+                                <li>Pivot Charts</li>
+                                <li>Conditional Formatting</li>
+                                <li>Power BI (basics)</li>
+                                <li>Chart Design</li>
+                            </ul>
+                        </div>
+
+                        <div class="skill-card-exp">
+                            <h3>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                                Domain Knowledge
+                            </h3>
+                            <ul class="skill-item-list">
+                                <li>Retail Analytics</li>
+                                <li>Banking Operations</li>
+                                <li>Academic Performance Data</li>
+                                <li>Operational Reporting</li>
+                                <li>Research &amp; Survey Data</li>
+                            </ul>
+                        </div>
+
+                        <div class="skill-card-exp">
+                            <h3>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                Communication
+                            </h3>
+                            <ul class="skill-item-list">
+                                <li>Stakeholder Reporting</li>
+                                <li>Plain-Language Insights</li>
+                                <li>Requirements Gathering</li>
+                                <li>Presentation Design</li>
+                                <li>Non-technical Briefings</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /home view -->
+
+    </main>
+
+    <!-- FOOTER — dark with contact -->
+    <footer id="footer-contact">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="logo-text">Omoyayi <span>O.</span></div>
+                    <p>Data Analyst based in Lagos, Nigeria. Specialising in building Excel-based solutions. Open to full-time roles and contract opportunities.</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Get In Touch</h4>
+                    <div class="footer-contact-links">
+                        <a href="mailto:damilola.omoyayi@gmail.com" class="footer-contact-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            hello@omoyayio.com
+                        </a>
+                        <a href="#" target="_blank" class="footer-contact-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                            linkedin.com/in/#
+                        </a>
+                        
+                            
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 <span>Omoyayi O.</span> &mdash; Built in Lagos, Nigeria.</p>
+                <p style="color:#1E293B">Data Analyst · Excel & Power Query</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts tailored for standalone home page -->
+    <script>
+        // ── MOBILE MENU ──
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+        
+        // Close mobile menu on click (so fragment links work smoothly)
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('mobile-menu').classList.remove('open');
+            });
+        });
+
+        // ── SCROLL REVEAL ──
+        function initReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('active'); observer.unobserve(e.target); }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+            
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+        document.addEventListener('DOMContentLoaded', initReveal);
+    </script>
+</body>
+</html>
