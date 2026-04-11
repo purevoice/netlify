@@ -1,0 +1,6 @@
+[build]
+publish = "portfolio site"
+
+[[edge_functions]]
+function = "block-bots"
+path = "/*"

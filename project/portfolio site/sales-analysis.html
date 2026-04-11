@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Performance Analysis - Omoyayi O.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* (Your entire original CSS remains exactly the same to ensure consistent styling) */
+        :root {
+            --brand-primary: #1E3A8A;
+            --brand-primary-hover: #1e3070;
+            --brand-light: #DBEAFE;
+            --brand-accent: #2563EB;
+            --brand-accent-light: #EFF6FF;
+            --bg-body: #F0F4FF;
+            --bg-surface: #FFFFFF;
+            --bg-surface-hover: #EFF6FF;
+            --bg-dark: #0A1628;
+            --bg-dark2: #0F172A;
+            --text-main: #0A1628;
+            --text-muted: #384353;
+            --text-inverse: #FFFFFF;
+            --border-color: #C7D7F5;
+            --border-dark: #1E3A5F;
+            --shadow-sm: 0 1px 3px 0 rgb(30 58 138 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+            --shadow-md: 0 4px 12px -2px rgb(30 58 138 / 0.12), 0 2px 6px -2px rgb(0 0 0 / 0.06);
+            --shadow-lg: 0 12px 28px -4px rgb(30 58 138 / 0.18), 0 4px 10px -4px rgb(0 0 0 / 0.08);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+        h1, h2, h3, h4 { letter-spacing: -0.02em; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+        p { color: var(--text-muted); }
+        a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+        /* Reveal animations */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* NAV */
+        nav { position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(240,244,255,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); padding: 0; height: 64px; display: flex; align-items: center; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { font-size: 1.15rem; font-weight: 800; color: var(--brand-primary); display: flex; align-items: center; gap: 0.5rem; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: -0.03em; }
+        .logo span { color: var(--brand-accent); }
+        .nav-links { display: flex; gap: 0; align-items: center; }
+        .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; }
+        .nav-links a:hover { color: var(--brand-primary); background: var(--brand-light); }
+        .nav-resume-btn { margin-left: 0.5rem; background: var(--brand-primary) !important; color: #fff !important; border-radius: 8px; padding: 0.5rem 1.1rem !important; font-weight: 600; transition: var(--transition-smooth); }
+        .nav-resume-btn:hover { background: var(--brand-primary-hover) !important; }
+        .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; width: 36px; height: 36px; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: var(--text-main); border-radius: 2px; transition: var(--transition-smooth); }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--border-color); padding: 0.5rem 24px 1rem; flex-direction: column; gap: 0; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { font-size: 0.95rem; font-weight: 500; color: var(--text-muted); padding: 0.875rem 0; border-bottom: 1px solid var(--border-color); display: block; width: 100%; }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { color: var(--brand-primary); }
+
+        /* BUTTONS & TAGS */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-weight: 600; font-size: 0.9rem; border-radius: 8px; cursor: pointer; transition: var(--transition-smooth); border: none; }
+        .tag-group { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+        .tag { background: var(--brand-light); color: var(--brand-primary); font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 999px; letter-spacing: 0.01em; }
+
+        /* VIEWS (Modified for standalone page) */
+        .main-content { flex: 1; padding-top: 96px; padding-bottom: 5rem; }
+
+        /* FOOTER */
+        footer { background: #020617; border-top: 1px solid #1E293B; padding: 3.5rem 0 2rem; }
+        .footer-inner { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; margin-bottom: 2.5rem; }
+        .footer-brand .logo-text { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; letter-spacing: -0.03em; }
+        .footer-brand .logo-text span { color: var(--brand-accent); }
+        .footer-brand p { color: #384353; font-size: 0.875rem; line-height: 1.7; max-width: 340px; }
+        .footer-contact h4 { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #384353; margin-bottom: 1.25rem; }
+        .footer-contact-links { display: flex; flex-direction: column; gap: 0.65rem; }
+        .footer-contact-link { display: flex; align-items: center; gap: 0.75rem; color: #94A3B8; font-size: 0.875rem; font-weight: 500; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; transition: all 0.2s; }
+        .footer-contact-link:hover { border-color: var(--brand-primary); color: #93C5FD; }
+        .footer-contact-link svg { color: var(--brand-accent); flex-shrink: 0; }
+        .footer-bottom { border-top: 1px solid #1E293B; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .footer-bottom p { font-size: 0.8rem; color: #334155; }
+        .footer-bottom span { color: var(--brand-accent); }
+
+        /* PROJECT DETAIL SPECIFICS */
+        .back-nav { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-weight: 600; cursor: pointer; margin-bottom: 2rem; transition: var(--transition-smooth); background: none; border: none; font-size: 0.95rem; }
+        .back-nav:hover { color: var(--text-main); transform: translateX(-4px); }
+        .project-header { margin-bottom: 1.25rem; }
+        .project-header h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 0.75rem; }
+        .project-header .tag { font-size: 0.6rem; padding: 0.15rem 0.5rem; }
+        
+        .tabs-container { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 0.5rem; display: flex; margin-bottom: 2rem; box-shadow: var(--shadow-sm); width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .tab-btn { flex: 1; padding: 0.9rem 1.25rem; text-align: center; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); background: transparent; border: none; border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-smooth); display: flex; justify-content: center; align-items: center; gap: 0.5rem; font-family: 'Inter', sans-serif; }
+        .tab-btn.active { background: var(--brand-primary); color: #fff; box-shadow: var(--shadow-md); }
+        .tab-content { display: none; animation: slideUp 0.3s ease forwards; }
+        .tab-content.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; margin-bottom: 1.75rem; box-shadow: var(--shadow-sm); }
+        .content-card h3 { display: flex; align-items: center; gap: 0.75rem; font-size: 1.35rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; }
+        .content-card p, .content-card li, .insight-list li { font-size: 0.97rem; }
+        .insight-list { list-style: none; }
+        .insight-list li { position: relative; padding-left: 2rem; margin-bottom: 1rem; color: var(--text-muted); }
+        .insight-list li::before { content: '→'; position: absolute; left: 0; color: var(--brand-primary); font-weight: bold; }
+
+        .attachments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+        .file-card { display: flex; align-items: center; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; transition: var(--transition-smooth); background: var(--bg-body); }
+        .file-card:hover { border-color: var(--brand-primary); background: var(--bg-surface); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .file-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 5px; font-size: 0.62rem; font-weight: 800; color: white; margin-right: 0.85rem; flex-shrink: 0; }
+        .file-icon.xlsx { background: #1D6F42; }
+        .file-icon.pdf { background: #F40F02; }
+        .file-details { flex-grow: 1; overflow: hidden; }
+        .file-name { display: block; font-weight: 600; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-size { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+        /* DASHBOARD IMAGE BOXES */
+        .dashboard-box { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: #0f172a; margin-bottom: 1.75rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-md); line-height: 0; }
+        .dashboard-box img { width: 100%; height: auto; display: block; object-fit: contain; }
+        .dashboard-placeholder { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1e293b 0%, #0f172a 60%, #0c1a4e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; line-height: 1.6; }
+        .dashboard-placeholder svg { opacity: 0.2; }
+        .dashboard-placeholder span { color: rgba(255,255,255,0.2); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; }
+        .expand-btn { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.78); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 0.38rem 1.1rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; backdrop-filter: blur(8px); transition: background 0.2s; display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; z-index: 2; }
+        .expand-btn:hover { background: rgba(0,0,0,0.96); }
+
+        .chart-box { position: relative; border-radius: var(--radius-md); overflow: hidden; background: #0f172a; margin-bottom: 0.75rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); line-height: 0; }
+        .chart-box img { width: 100%; height: auto; display: block; object-fit: contain; }
+        .chart-box .chart-placeholder { width: 100%; aspect-ratio: 4/3; background: linear-gradient(135deg, #1e293b 0%, #0f172a 60%, #0c1a4e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; line-height: 1.6; }
+        .chart-box .chart-placeholder svg { opacity: 0.18; }
+        .chart-box .chart-placeholder span { color: rgba(255,255,255,0.18); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; }
+        .chart-box .expand-btn { bottom: 10px; }
+
+        /* LIGHTBOX MODAL */
+        #global-lightbox { display: none; position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.97); align-items: center; justify-content: center; }
+        #global-lightbox.open { display: flex; }
+        #global-lightbox .lb-close { position: fixed; top: 14px; right: 14px; z-index: 100000; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+        #global-lightbox .lb-close:hover { background: rgba(255,255,255,0.2); }
+        #global-lightbox .lb-content { max-width: 95vw; max-height: 90vh; border-radius: 8px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.8); line-height: 0; display: flex; align-items: center; justify-content: center; }
+        #global-lightbox .lb-content img { max-width: 100%; max-height: 90vh; width: auto; height: auto; display: block; object-fit: contain; border-radius: 8px; }
+        #global-lightbox .lb-placeholder { width: 640px; max-width: 90vw; aspect-ratio: 16/9; background: linear-gradient(135deg, #1e293b 0%, #0f172a 60%, #0c1a4e 100%); display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        #global-lightbox .lb-placeholder span { color: rgba(255,255,255,0.25); font-size: 0.85rem; font-weight: 500; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links, .nav-resume-btn { display: none; }
+            .hamburger { display: flex; }
+            .tabs-container { flex-direction: column; }
+            .tab-btn { padding: 0.85rem; }
+            .content-card { padding: 1.25rem; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+            #global-lightbox .lb-content { position: absolute; top: 50%; left: 50%; width: 100dvh; height: 100dvw; transform: translate(-50%, -50%) rotate(90deg); transform-origin: center; max-width: none; max-height: none; border-radius: 0; }
+            #global-lightbox .lb-content img { width: 100%; height: 100%; object-fit: contain; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-content">
+            <!-- Home Link -->
+            <a href="index.html" class="logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand-primary)"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                Omoyayi<span>&nbsp;O.</span>
+            </a>
+
+            <!-- Desktop links relative to home -->
+            <div class="nav-links">
+                <a href="index.html#about-section">About</a>
+                <a href="index.html#projects-section">Projects</a>
+                <a href="index.html#skills-section">Skills</a>
+                <a href="index.html#footer-contact">Contact</a>
+                
+            </div>
+
+            <!-- Hamburger -->
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="index.html#about-section">About</a>
+        <a href="index.html#projects-section">Projects</a>
+        <a href="index.html#skills-section">Skills</a>
+        <a href="index.html#footer-contact">Contact</a>
+    </div>
+
+    <main class="main-content container">
+
+        <!-- Back to Home Link -->
+        <a href="index.html#projects-section" class="back-nav">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to Projects
+        </a>
+
+        <!-- Project Header -->
+        <div class="project-header reveal">
+            <h1>Sales Performance &amp; Revenue Decomposition Analysis</h1>
+            <div class="tag-group">
+                <span class="tag">Excel</span>
+                <span class="tag">Power Query</span>
+                <span class="tag">Revenue Analysis</span>
+                <span class="tag">EDA</span>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container reveal">
+            <button class="tab-btn active" onclick="switchTab('p1','exec')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                Executive Summary
+            </button>
+            <button class="tab-btn" onclick="switchTab('p1','tech')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Technical Breakdown
+            </button>
+        </div>
+
+        <!-- ── EXECUTIVE SUMMARY TAB ── -->
+        <div id="p1-exec" class="tab-content active reveal">
+
+            <!-- DASHBOARD IMAGE BOX -->
+            <div class="dashboard-box">
+<img class="dashboard-img" 
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775938422/onlineretail_ksbkxk.png" 
+         alt="">
+                <button class="expand-btn" onclick="openLightbox(this)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                    Expand
+                </button>
+            </div>
+
+            <div class="content-card">
+                <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-primary)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Business Problem</h3>
+                <p>Revenue fluctuations can obscure the underlying health of a retail business when the contributing factors are not clearly understood. Without distinguishing whether changes are driven by customer demand, pricing dynamics, or product performance, decision makers may struggle to implement effective growth strategies.</p>
+                <p style="margin-top:0.75rem;">This analysis was conducted to uncover the drivers of revenue performance using transactional data from a UK-based online retail business over a twelve-month period from December 2010 to November 2011. Incomplete data for December 2011 was excluded to ensure accurate month-over-month comparison.</p>
+            </div>
+
+            <div class="content-card">
+                <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-primary)"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> Key Metrics</h3>
+                <ul class="insight-list">
+                    <li><strong>Total Revenue:</strong> £10.2M generated across the analysis period.</li>
+                    <li><strong>Total Orders:</strong> 19,800 transactions processed.</li>
+                    <li><strong>Units Sold:</strong> 5.6 million items across all product lines.</li>
+                    <li><strong>Average Order Value:</strong> £518.28 per order.</li>
+                    <li><strong>Customer Base:</strong> 4,334 unique customers identified.</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-primary)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Key Findings</h3>
+                <ul class="insight-list">
+                    <li>Sales performance was driven by <strong>seasonal demand</strong>, with revenue increasing toward the end of the period and peaking in November 2011, indicating concentration of purchasing activity during peak periods.</li>
+                    <li>Revenue is driven by <strong>high-value products</strong> rather than volume alone, with a small number of premium-priced items contributing more to total revenue compared to high-quantity items.</li>
+                    <li>Revenue is heavily concentrated in the <strong>domestic market</strong>, with the United Kingdom contributing the majority of total revenue compared to international markets.</li>
+                    <li><strong>Returning customers</strong> contributed more to overall sales activity, with repeat purchasing increasing across the period while new customer acquisition declined after the initial peak.</li>
+                    <li>Revenue changes were primarily driven by <strong>sales volume</strong> rather than pricing, with transaction activity having a greater influence on performance across the period.</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-primary)"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Recommendations</h3>
+                <ul class="insight-list">
+                    <li><strong>Capture Peak Demand:</strong> Align merchandising, marketing, and inventory strategies ahead of peak demand periods to maximize transaction activity.</li>
+                    <li><strong>Elevate Premium Products:</strong> Increase visibility of high-value products and ensure sufficient stock availability to support their contribution to revenue.</li>
+                    <li><strong>Expand Internationally:</strong> Strengthen presence in high-performing international markets to reduce reliance on the domestic market.</li>
+                    <li><strong>Strengthen Retention and Acquisition:</strong> Support repeat purchasing through retention initiatives while sustaining customer acquisition efforts.</li>
+                    <li><strong>Drive Off-Peak Transaction Activity:</strong> Stimulate purchasing activity during low-demand periods through initiatives that increase volume without relying on price adjustments.</li>
+                </ul>
+            </div>
+
+            <div class="content-card" style="padding: 1.5rem;">
+                <h3 style="font-size:1rem; margin-bottom:1rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-primary)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Project Files</h3>
+                
+                <div class="attachments-grid">
+                    <a href="https://1drv.ms/x/c/4a0eaac45c921ee8/IQD9tFfj5VL3Tat2TnA3IxwhAUdWzEBw_r1YlJNo1ee04ZI?download=1" target="_blank" rel="noopener noreferrer" class="file-card">
+    <div class="file-icon xlsx">XLSX</div>
+    <div class="file-details">
+        <span class="file-name">Online_Retail_Analysis.xlsx</span>
+        <span class="file-size">Click to Download</span>
+    </div></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TECHNICAL BREAKDOWN TAB ── -->
+        <div id="p1-tech" class="tab-content reveal">
+
+            <div class="content-card">
+                <h3>1. Problem Statement</h3>
+                <p>Revenue fluctuations can obscure the true performance of a retail business when the underlying drivers are not clearly understood. Without distinguishing whether changes are driven by customer demand, product value, pricing dynamics, or geographic contribution, decision-making becomes reactive rather than strategic.</p>
+                <p style="margin-top:0.75rem;">This analysis focuses on identifying the key drivers of revenue performance and understanding how product performance, customer purchasing patterns, and geographic contribution collectively influence overall sales outcomes.</p>
+            </div>
+
+            <div class="content-card">
+                <h3>2. Objectives</h3>
+                <p>The analysis was conducted to:</p>
+                <ul class="insight-list" style="margin-top:0.75rem;">
+                    <li>Examine revenue performance and trends over time</li>
+                    <li>Identify the key drivers influencing revenue changes</li>
+                    <li>Determine the products contributing most to total revenue</li>
+                    <li>Evaluate geographic contribution across markets</li>
+                    <li>Analyze customer acquisition, retention, and purchase frequency patterns</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>3. Dataset Overview</h3>
+                <p>The analysis is based on the UCI Online Retail dataset, which contains transactional records from a UK-based online retailer spanning December 2010 to December 2011.</p>
+                <p style="margin-top:0.75rem;">The dataset includes over 500,000 transactions, with key fields such as invoice date, product description, quantity, unit price, customer ID, and country. These variables support analysis of revenue trends, product performance, customer purchasing behavior, and geographic sales distribution.</p>
+            </div>
+
+            <div class="content-card">
+                <h3>4. Tools &amp; Data Considerations</h3>
+                <p>The analysis was conducted using Microsoft Excel for data cleaning, transformation, and visualization, with Power Query applied to standardize and structure the transactional data.</p>
+                <p style="margin-top:1rem; font-weight:600; color:var(--text-main);">Data Considerations &amp; Limitations</p>
+                <ul class="insight-list" style="margin-top:0.5rem;">
+                    <li>Cancelled orders and returns appear as negative quantities and were excluded to ensure revenue reflects completed sales</li>
+                    <li>Customer-level analysis is based on records with valid Customer IDs</li>
+                    <li>The dataset covers a one-year period, limiting long-term trend evaluation</li>
+                    <li>December 2011 data was excluded due to incompleteness, ensuring consistent month-over-month comparison</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>5. Data Preparation &amp; Feature Engineering</h3>
+                <p>The dataset was cleaned, standardized, and enhanced to ensure consistency and analytical usability.</p>
+
+                <p style="margin-top:1rem; font-weight:600; color:var(--text-main);">Data Cleaning &amp; Standardization</p>
+                <ul class="insight-list" style="margin-top:0.5rem;">
+                    <li>Removed duplicate and incomplete records</li>
+                    <li>Standardized date formats and text fields</li>
+                    <li>Cleaned and normalized product descriptions</li>
+                    <li>Ensured numeric fields were correctly formatted</li>
+                </ul>
+
+                <p style="margin-top:1rem; font-weight:600; color:var(--text-main);">Transaction Classification</p>
+                <ul class="insight-list" style="margin-top:0.5rem;">
+                    <li>Identified and excluded non-sales transactions such as cancellations, returns, and adjustments</li>
+                    <li>Ensured analysis reflects only completed sales activity</li>
+                </ul>
+
+                <p style="margin-top:1rem; font-weight:600; color:var(--text-main);">Calculated Columns</p>
+                <ul class="insight-list" style="margin-top:0.5rem;">
+                    <li><strong>Revenue:</strong> Quantity × Unit Price</li>
+                    <li><strong>Time Features:</strong> InvoiceDateOnly, Year-Month, Numeric YearMonth for trend analysis</li>
+                    <li><strong>Customer Segmentation:</strong> First Purchase Date and Customer Type (New vs Returning)</li>
+                    <li><strong>Customer Filtering:</strong> CustomerID flag for valid customer records</li>
+                    <li><strong>Geographic Grouping:</strong> Market Group and country classification</li>
+                    <li><strong>Product Standardization:</strong> Clean Description for consistent product naming</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>6. Exploratory Data Analysis</h3>
+
+                <!-- Main dashboard image -->
+                <div class="dashboard-box" style="margin-bottom:1.5rem;">
+                    <img class="dashboard-img" 
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775938422/onlineretail_ksbkxk.png" 
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+
+                <p style="font-weight:600; color:var(--text-main); margin-bottom:0.5rem;">Key Metrics</p>
+                <ul class="insight-list">
+                    <li><strong>Total Revenue:</strong> £10.2M</li>
+                    <li><strong>Total Orders:</strong> 19.8K</li>
+                    <li><strong>Total Units Sold:</strong> 5.6M</li>
+                    <li><strong>Average Order Value:</strong> £518.28</li>
+                    <li><strong>Total Customers:</strong> 4,334</li>
+                </ul>
+
+                <p style="font-weight:600; color:var(--text-main); margin-top:1.25rem; margin-bottom:0.5rem;">Monthly Revenue Trend</p>
+                <div class="chart-box">
+                    <img class="chart-img"
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775732891/Monthly_revenue_trend_t5j0bn.png"
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+                <p>Revenue started at £775.7K in December 2010, declined to approximately £689.8K in January 2011, and remained relatively moderate through mid-year. From September onward, revenue increased significantly, reaching a peak of £1.45M in November 2011. This pattern indicates an early-year dip followed by gradual recovery and strong late-year demand.</p>
+
+                <p style="font-weight:600; color:var(--text-main); margin-top:1.25rem; margin-bottom:0.5rem;">Product Performance</p>
+                <div class="chart-box">
+                    <img class="chart-img"
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775732893/Top_products_by_revenue_ajotsn.png"
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+                <p>Product performance varied significantly between revenue contribution and quantity sold. REGENCY CAKESTAND 3 TIER generated the highest revenue at approximately £168.1K from just over 13,000 units, while MEDIUM CERAMIC TOP STORAGE JAR recorded the highest quantity sold at over 77,000 units but generated comparatively lower revenue. This highlights a distinction between high-volume products and high-value products in driving total revenue.</p>
+
+                <p style="font-weight:600; color:var(--text-main); margin-top:1.25rem; margin-bottom:0.5rem;">Geographic Revenue Contribution</p>
+                <div class="chart-box">
+                    <img class="chart-img"
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775732892/Revenue_contribution_v7h3ef.png"
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+                <p>Revenue was heavily concentrated in the United Kingdom, which contributed approximately £8.73M of total revenue, compared to £1.52M from international markets. Within international markets, the Netherlands and Ireland were the highest contributors, generating approximately £272.1K and £263.7K respectively. This indicates a strong reliance on the domestic market for revenue generation.</p>
+
+                <p style="font-weight:600; color:var(--text-main); margin-top:1.25rem; margin-bottom:0.5rem;">Customer Behavior (New vs Returning &amp; Purchase Frequency)</p>
+                <div class="chart-box">
+                    <img class="chart-img"
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775732892/New_and_returning_customers_r7fwek.png"
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+                <p>New customers peaked at 884 in December 2010 before declining in subsequent months, while returning customers increased steadily, reaching 1,337 in November 2011. Purchase frequency remained relatively stable between 1.4 and 1.6 purchases per customer, increasing slightly to 1.7 in November 2011, indicating stronger repeat purchasing during peak demand periods.</p>
+
+                <p style="font-weight:600; color:var(--text-main); margin-top:1.25rem; margin-bottom:0.5rem;">Revenue Decomposition: Volume vs Price Effect</p>
+                <div class="chart-box">
+                    <img class="chart-img"
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775732896/Volume_and_price_effect_dr76hw.png"
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+                <p>Revenue changes were influenced by both volume and price effects, with volume showing greater variability. Volume effect contributed to a decrease of approximately £168.6K in January 2011 and a significant increase of approximately £254.8K in September 2011. Price effects were generally smaller, with a moderate increase of approximately £122K in November 2011. This indicates that transaction volume had a stronger influence on revenue changes than pricing.</p>
+
+                <p style="font-weight:600; color:var(--text-main); margin-top:1.25rem; margin-bottom:0.5rem;">Revenue Change Breakdown: Waterfall Analysis</p>
+                <div class="chart-box">
+                    <img class="chart-img"
+         src="https://res.cloudinary.com/dnwl9tbue/image/upload/v1775732897/waterfall_chart_iktosn.png"
+         alt="">
+                    <button class="expand-btn" onclick="openLightbox(this)">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        Expand
+                    </button>
+                </div>
+                <p>Between October and November 2011, revenue increased from approximately £1.1M to £1.4M. This increase was primarily driven by volume effect, which contributed approximately £226.7K, while price effect contributed a smaller increase of approximately £93.9K. This reinforces the role of increased purchasing activity as the main driver of peak-period performance.</p>
+            </div>
+
+            <div class="content-card">
+                <h3>7. Insights</h3>
+                <ul class="insight-list">
+                    <li>Sales performance is highly seasonal, with demand building toward the end of the year and peaking in November, indicating dependence on peak purchasing periods</li>
+                    <li>Revenue is influenced by both product value and sales volume, with premium-priced products contributing disproportionately to total revenue</li>
+                    <li>Revenue generation is highly concentrated in the domestic market, indicating reliance on the United Kingdom relative to international markets</li>
+                    <li>Returning customers play a central role in sustaining sales performance, with repeat purchasing driving growth toward the peak period</li>
+                    <li>Revenue fluctuations are driven primarily by transaction volume rather than pricing, with increased purchasing activity being the dominant factor</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>8. Recommendations</h3>
+                <ul class="insight-list">
+                    <li>Align merchandising, marketing, and inventory planning with peak demand periods to maximize seasonal revenue</li>
+                    <li>Increase visibility and availability of high-value products to strengthen their contribution to total sales</li>
+                    <li>Expand presence in high-performing international markets to reduce reliance on the domestic market</li>
+                    <li>Strengthen customer retention while sustaining acquisition to support repeat purchasing behavior</li>
+                    <li>Drive purchasing activity during off-peak periods through initiatives that increase transaction volume without relying on price adjustments</li>
+                </ul>
+            </div>
+			
+			<div class="content-card" style="padding: 1.5rem;">
+                <h3 style="font-size:1rem; margin-bottom:1rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-primary)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Project Files</h3>
+                
+                <div class="attachments-grid">
+                    <a href="https://1drv.ms/x/c/4a0eaac45c921ee8/IQD9tFfj5VL3Tat2TnA3IxwhAUdWzEBw_r1YlJNo1ee04ZI?download=1" target="_blank" rel="noopener noreferrer" class="file-card">
+    <div class="file-icon xlsx">XLSX</div>
+    <div class="file-details">
+        <span class="file-name">Online_Retail_Analysis.xlsx</span>
+        <span class="file-size">Click to Download</span>
+    </div></a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="footer-contact">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="logo-text">Omoyayi <span>O.</span></div>
+                    <p>Data Analyst based in Lagos, Nigeria. Specialising in building Excel-based solutions. Open to full-time roles and contract opportunities.</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Get In Touch</h4>
+                    <div class="footer-contact-links">
+                        <a href="mailto:damilolaomoyayi@gmail.com" class="footer-contact-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            hello@omoyayio.com
+                        </a>
+                        <a href="https://linkedin.com/in/#" target="_blank" class="footer-contact-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                            linkedin.com/in/#
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 <span>Omoyayi O.</span> &mdash; Built in Lagos, Nigeria.</p>
+                <p style="color:#1E293B">Data Analyst · Excel & Power Query</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts tailored for multipage format -->
+    <script>
+        // ── TAB SWITCHING ──
+        function switchTab(prefix, tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(prefix + '-' + tab).classList.add('active');
+        }
+
+        // ── MOBILE MENU ──
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+        
+        // Close mobile menu on click (so fragment links work smoothly)
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('mobile-menu').classList.remove('open');
+            });
+        });
+
+        // ── SCROLL REVEAL ──
+        function initReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('active'); observer.unobserve(e.target); }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+        document.addEventListener('DOMContentLoaded', initReveal);
+
+        // ── LIGHTBOX ──
+        function openLightbox(btn) {
+            const box = btn.closest('.dashboard-box, .chart-box');
+            const lb = document.getElementById('global-lightbox');
+            const lbContent = lb.querySelector('.lb-content');
+            lbContent.innerHTML = '';
+            const img = box ? box.querySelector('img') : null;
+
+            if (img) {
+                const clone = document.createElement('img');
+                clone.src = img.src; clone.alt = img.alt || '';
+                lbContent.appendChild(clone);
+            } else {
+                lbContent.innerHTML = '<div class="lb-placeholder"><span>Full view</span></div>';
+            }
+
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('global-lightbox').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('global-lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+
+    <!-- GLOBAL LIGHTBOX MODAL -->
+    <div id="global-lightbox">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <div class="lb-content"></div>
+    </div>
+
+</body>
+</html>
