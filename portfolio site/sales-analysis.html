@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+	<meta name="robots" content="noindex, nofollow">
     <style>
         /* (Your entire original CSS remains exactly the same to ensure consistent styling) */
         :root {
@@ -599,25 +600,6 @@
         <button class="lb-close" onclick="closeLightbox()">✕</button>
         <div class="lb-content"></div>
     </div>
-<script>
-document.addEventListener('contextmenu', e => e.preventDefault());
 
-document.addEventListener('copy', e => {
-  e.preventDefault();
-});
-
-document.addEventListener('cut', e => {
-  e.preventDefault();
-});
-
-document.addEventListener('keydown', function(e) {
-  if (
-    (e.ctrlKey && ['c', 'u', 's', 'x'].includes(e.key.toLowerCase())) ||
-    e.key === 'F12'
-  ) {
-    e.preventDefault();
-  }
-});
-</script>
 </body>
 </html>
